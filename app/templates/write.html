@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% from 'bootstrap/form.html' import render_form %}
+{% block body %}
+    <div class="form-group">
+        {{ render_form(form,action=request.full_path) }}
+    </div>
+    {% for msg in get_flashed_messages() %}
+        <p class="err">{{ msg }}</p>
+    {% endfor %}
+{% endblock %}
+{% block script %}
+{{ super() }}
+{{ ckeditor.load() }}
+{% endblock %}

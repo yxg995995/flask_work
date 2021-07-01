@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% from 'bootstrap/form.html' import render_form %}
+{% block body %}
+    <div class="container">
+    <h3 class="text-primary">
+        {{ post.title }}
+    </h3>
+    <h5 class="text-primary">
+        {{ post.timestamp }}
+    </h5>
+    <p class="text-primary">
+        {{ post.body|striptags }}
+    </p>
+    {% if current_user.is_authenticated %}
+    <form class="form-group" method="post"
+          action="{{ url_for('blog.write_comment',username=current_user.username,post_id=post.id) }}">
+    {{ form.csrf_token }}
+        <div class="mb-3">
+        <label class="form-label">写下你的评论</label>
+        {{ form.body(class="form-control") }}
+        {{ form.submit(class="form-btn") }}
+    </div>
+    </form>
+    {% else %}
+    <div>
+        <a class="btn" type="button" href="{{ url_for('auth.login') }}">
+            评论请先登陆
+        </a>
+    </div>
+    {% endif %}
+        <h4>Comments</h4>
+        <div class="list-group">
+        {% for comment,user in result %}
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1 text-primary"><a href="{{ url_for('blog.about',username=user) }}">{{ user }}</a>
+                <small class="text-muted">#{{ loop.revindex }}</small>
+                </h5>
+                <small>
+                    {{ comment.timestamp }}
+                </small>
+            </div>
+            <p class="mb-1">{{ comment.body|striptags }}</p>
+        {% endfor %}
+        </div>
+    </div>
+{% endblock %}

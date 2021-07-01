@@ -1,0 +1,23 @@
+{% from 'bootstrap/form.html' import render_form %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div>
+        {{ render_form(form,action=request.full_path) }}
+        {% if operation=='登陆' %}
+        <a class="btn" type="button" href="{{ url_for('auth.login') }}">
+            {{ operation }}</a>
+        {% else %}
+        <a class="btn" type="button" href="{{ url_for('auth.register') }}">
+            {{ operation }}</a>
+        {% endif %}
+    </div>
+    {% for msg in get_flashed_messages() %}
+        <p class="err">{{ msg }}</p>
+    {% endfor %}
+</body>
+</html>
